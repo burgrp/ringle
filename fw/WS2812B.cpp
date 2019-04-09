@@ -57,7 +57,6 @@ class WS2812B
 
     void set(unsigned char *grbData, int ledCount)
     {
-
         for (int c = 0; c < ledCount * 3 * 8; c++)
         {
             if ((grbData[c >> 3] >> (~c & 0x07)) & 1)

@@ -1,5 +1,5 @@
-const int dataPin = 5;
-const int ledCount = 3;
+const int dataPin = 10;
+const int ledCount = 2;
 
 void inline shortWait() {
 }
@@ -17,11 +17,11 @@ void initApplication()
 
     target::RCC.AHBENR.setIOPAEN(1);
 
-    leds.init(&target::GPIOA, 5);
+    leds.init(&target::GPIOA, dataPin);
 
     unsigned char grbData[ledCount * 3];
     for (int c = 0; c < ledCount * 3; c++) {
-        grbData[c] = 0x28;
+        grbData[c] = c<<5 ^ c>>2;
     }
 
     leds.set(grbData, ledCount);
