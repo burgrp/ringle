@@ -1,5 +1,5 @@
 const int dataPin = 10;
-const int ledCount = 2;
+const int ledCount = 30;
 
 void inline shortWait() {
 }
@@ -21,7 +21,7 @@ void initApplication()
 
     unsigned char grbData[ledCount * 3];
     for (int c = 0; c < ledCount * 3; c++) {
-        grbData[c] = c<<5 ^ c>>2;
+        grbData[c] = 0xFF;// c<<5 ^ c>>2;
     }
 
     leds.set(grbData, ledCount);
