@@ -10,12 +10,12 @@ class Ringle : public Alert
     Encoder encColor;
     Encoder encSector;
 
-    int level = 125;      // 0..255
+    int level = 125; // 0..255
     bool sectorCenterMode = false;
     int sectorCenter = 0; // 0..ledCount - 1
     int sectorExt = 3;    // 0..ledCount / 2
     bool colorMode = false;
-    int color = 7;   // 0..255 red->red
+    int color = 7; // 0..255 red->red
     int white = 0; // -10 (warm white)..+10 (cold white)
 
   public:
@@ -100,13 +100,16 @@ class Ringle : public Alert
         }
         else
         {
-            white = limit(white, encColor.readPosition(), -10, 10);            
+            white = limit(white, encColor.readPosition(), -10, 10);
         }
-        if (sectorCenterMode) {
+        if (sectorCenterMode)
+        {
             sectorCenter = wrap(sectorCenter, encSector.readPosition(), 0, ledCount - 1);
-        } else {
+        }
+        else
+        {
             sectorExt = limit(sectorExt, encSector.readPosition(), 0, ledCount / 2);
-        }        
+        }
         updateLeds();
     }
 
@@ -130,8 +133,6 @@ class Ringle : public Alert
 
         leds.init(&target::GPIOA, dataPin);
 
-        // target::SYSCFG.EXTICR1.setEXTI(0, 0);
-        // target::SYSCFG.EXTICR1.setEXTI(2, 0);
         target::NVIC.ISER.setSETENA(1 << target::interrupts::External::EXTI0_1);
         target::NVIC.ISER.setSETENA(1 << target::interrupts::External::EXTI2_3);
         target::NVIC.ISER.setSETENA(1 << target::interrupts::External::EXTI4_15);
