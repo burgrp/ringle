@@ -11,9 +11,10 @@ class Ringle : public Alert
     Encoder encSector;
 
     int level = 125;      // 0..255
+    bool sectorCenterMode = false;
     int sectorCenter = 0; // 0..ledCount - 1
     int sectorExt = 3;    // 0..ledCount / 2
-    int colorMode = false;
+    bool colorMode = false;
     int color = 7;   // 0..255 red->red
     int white = 0; // -10 (warm white)..+10 (cold white)
 
@@ -101,7 +102,11 @@ class Ringle : public Alert
         {
             white = limit(white, encColor.readPosition(), -10, 10);            
         }
-        sectorCenter = wrap(sectorCenter, encSector.readPosition(), 0, ledCount - 1);
+        if (sectorCenterMode) {
+            sectorCenter = wrap(sectorCenter, encSector.readPosition(), 0, ledCount - 1);
+        } else {
+            sectorExt = limit(sectorExt, encSector.readPosition(), 0, ledCount / 2);
+        }        
         updateLeds();
     }
 
