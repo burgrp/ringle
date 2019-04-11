@@ -57,6 +57,11 @@ class WS2812B
 
     void set(unsigned char *grbData, int ledCount)
     {
+        // reset
+        port->BSRR = 0x10000 << pin;
+        for (volatile int c = 0; c < 1000; c++);
+
+        asm("CPSID i");
         for (int c = 0; c < ledCount * 3 * 8; c++)
         {
             if ((grbData[c >> 3] >> (~c & 0x07)) & 1)
@@ -74,5 +79,6 @@ class WS2812B
                 waitLong();
             }
         }
+        asm("CPSIE i");
     }
 };

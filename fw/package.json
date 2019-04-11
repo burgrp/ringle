@@ -9,8 +9,12 @@
 	},
 	"silicon": {
 		"sources": [
-			"WS2812B.cpp",
-			"ringle.cpp"
+			"src/colors.cpp",
+			"src/alert.cpp",			
+			"src/debounced-gpio.cpp",
+			"src/encoder.cpp",
+			"src/WS2812B.cpp",
+			"src/ringle.cpp"
 		],
 		"symbols": {
 			"ROM_START": "0x08000000",
