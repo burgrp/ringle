@@ -7,14 +7,15 @@ class Ringle : public Alert
     WS2812B leds;
 
     Encoder encLevel;
+    Encoder encColor;
     Encoder encSector;
 
     int level = 125;      // 0..255
     int sectorCenter = 0; // 0..ledCount - 1
     int sectorExt = 3;    // 0..ledCount / 2
-    int colorMode = true;
+    int colorMode = false;
     int color = 7;   // 0..255 red->red
-    int white = -10; // -10 (warm white)..+10 (cold white)
+    int white = 0; // -10 (warm white)..+10 (cold white)
 
   public:
     void updateLeds()
@@ -61,29 +62,56 @@ class Ringle : public Alert
         leds.set(grbData, ledCount);
     }
 
-
-    int change(int current, int encPosition, int min, int max) {
+    int limit(int current, int encPosition, int min, int max)
+    {
         int v = current + encPosition;
-        if (v < min) {
+        if (v < min)
+        {
             v = min;
         }
-        if (v > max) {
+        if (v > max)
+        {
             v = max;
+        }
+        return v;
+    }
+
+    int wrap(int current, int encPosition, int min, int max)
+    {
+        int v = current + encPosition;
+        if (v < min)
+        {
+            v += max - min + 1;
+        }
+        if (v > max)
+        {
+            v -= max - min + 1;
         }
         return v;
     }
 
     void alert()
     {
-        level = change(level, encLevel.readPosition() * 5, 0, 255);
-        sectorCenter = change(sectorCenter, encSector.readPosition(), 0, ledCount - 1);
+        level = limit(level, encLevel.readPosition() * 5, 0, 255);
+        if (colorMode)
+        {
+            color = wrap(color, encColor.readPosition() * 5, 0, 255);
+        }
+        else
+        {
+            white = limit(white, encColor.readPosition(), -10, 10);            
+        }
+        sectorCenter = wrap(sectorCenter, encSector.readPosition(), 0, ledCount - 1);
         updateLeds();
     }
 
-    void handleExternalInterrupt() {
+    void handleExternalInterrupt()
+    {
         encLevel.handleInterrupt();
+        encColor.handleInterrupt();
+        encSector.handleInterrupt();
     }
- 
+
     void init()
     {
         // run on 48MHz
@@ -104,6 +132,7 @@ class Ringle : public Alert
         target::NVIC.ISER.setSETENA(1 << target::interrupts::External::EXTI4_15);
 
         encLevel.init(&target::GPIOA, 0, 1, this);
+        encColor.init(&target::GPIOA, 3, 4, this);
         encSector.init(&target::GPIOA, 6, 7, this);
 
         updateLeds();
@@ -114,17 +143,17 @@ Ringle ringle;
 
 void interruptHandlerEXTI0_1()
 {
-	ringle.handleExternalInterrupt();
+    ringle.handleExternalInterrupt();
 }
 
 void interruptHandlerEXTI2_3()
 {
-	ringle.handleExternalInterrupt();
+    ringle.handleExternalInterrupt();
 }
 
 void interruptHandlerEXTI4_15()
 {
-	ringle.handleExternalInterrupt();
+    ringle.handleExternalInterrupt();
 }
 
 void initApplication()
