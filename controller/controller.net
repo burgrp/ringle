@@ -1,7 +1,7 @@
 (export (version D)
   (design
     (source /home/paul/ringle/controller/controller.sch)
-    (date "Wed 20 Mar 2019 10:18:39 AM CET")
+    (date "Thu 11 Apr 2019 12:25:23 PM CEST")
     (tool "Eeschema 5.0.2-bee76a0~70~ubuntu16.04.1")
     (sheet (number 1) (name /) (tstamps /)
       (title_block
@@ -99,7 +99,7 @@
       (tstamp 5C8BAC15))
     (comp (ref J1)
       (value USB_B)
-      (footprint Connector_USB:USB_B_OST_USB-B1HSxx_Horizontal)
+      (footprint controller:USB_B_OST_USB-B1HSxx_Horizontal)
       (datasheet " ~")
       (libsource (lib Connector) (part USB_B) (description "USB Type B connector"))
       (sheetpath (names /) (tstamps /))

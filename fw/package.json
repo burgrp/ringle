@@ -10,10 +10,11 @@
 	"silicon": {
 		"sources": [
 			"src/colors.cpp",
-			"src/alert.cpp",			
-			"src/debounced-gpio.cpp",
-			"src/encoder.cpp",
-			"src/WS2812B.cpp",
+			"src/to-lib/alert.cpp",			
+			"src/to-lib/debounced-gpio.cpp",
+			"src/to-lib/button.cpp",
+			"src/to-lib/encoder.cpp",
+			"src/to-lib/WS2812B.cpp",
 			"src/ringle.cpp"
 		],
 		"symbols": {
