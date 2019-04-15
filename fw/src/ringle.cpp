@@ -130,7 +130,7 @@ class Ringle : public Alert
 
         if (sectorCenterMode)
         {
-            sectorCenter = wrap(sectorCenter, encSector.readPosition(), 0, ledCount - 1);
+            sectorCenter = wrap(sectorCenter, -encSector.readPosition(), 0, ledCount - 1);
         }
         else
         {
